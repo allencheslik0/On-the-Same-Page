@@ -30,15 +30,15 @@ const loginFormHandler = async (event) => {
 const signupFormHandler = async (event) => {
   event.preventDefault();
 
-  const username = document.querySelector('#username-signup').value.trim();
+  const name = document.querySelector('#username-signup').value.trim();
   const email = document.querySelector('#email-signup').value.trim();
   const password = document.querySelector('#password-signup').value.trim();
 
-  if (username && email && password) {
+  if (name && email && password) {
     const response = await fetch('/api/user', {
       method: 'POST',
       body: JSON.stringify({
-        username,
+        name,
         email,
         password,
       }),
@@ -48,7 +48,7 @@ const signupFormHandler = async (event) => {
     });
 
     if (response.ok) {
-      document.location.replace('/profile');
+      document.location.replace('/');
     } else {
       alert('Failed to sign up. Oh darn. :(');
     }
