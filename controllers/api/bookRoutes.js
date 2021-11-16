@@ -25,22 +25,6 @@ router.get('/', withAuth, async (req, res) => {
   res.render('all', { books });
 });
 
-//get one book by id
-// router.get('/:id', withAuth, async (req, res) => {
-//   try {
-//     const bookData = await Book.findbyPK(req.params.id);
-//     const book = bookData.get({
-//       plain: true,
-//     });
-//     res.render('book', {
-//       book,
-//       loggedIn: req.session.loggedIn,
-//     });
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
-
 //Get books by Genre
 router.get('/', withAuth, async (req, res) => {
   try {

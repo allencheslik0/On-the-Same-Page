@@ -33,39 +33,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-//Get one user
-router.get('/user/:id', async (req, res) => {
-  if (!req.session.loggedIn) {
-    res.redirect('/login');
-  } else {
-    try {
-      const userData = await User.findByPk(req.params.id, {
-        include: [
-          {
-            model: Book,
-            attributes: ['title', 'author', 'isbn', 'pages', 'user_id'],
-          },
-        ],
-      });
-      const user = userData.get({
-        plain: true,
-      });
-
-      res.render('user', {
-        user,
-        logged_in: req.session.logged_in,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  }
-});
-
 router.get('/profile', (req, res) => {
   try {
     if (req.session.loggedIn) {
-      res.render('profile');
+      res.render('profile', {
+        ...user,
+        logged_in: true,
+      });
     }
 
     res.render('login');
@@ -73,22 +47,6 @@ router.get('/profile', (req, res) => {
     res.status(500).json(err);
   }
 });
-
-// //Get one book
-// router.get('/book/:id', withAuth, async (req, res) => {
-//   try {
-//     const bookData = await Book.findbyPK(req.params.id);
-//     const book = bookData.get({
-//       plain: true,
-//     });
-//     res.render('book', {
-//       book,
-//       loggedIn: req.session.loggedIn,
-//     });
-//   } catch (err) {
-//     res.status(500).json(err);
-//   }
-// });
 
 // // Use withAuth middleware to prevent access to route
 // router.get('/profile', withAuth, async (req, res) => {
