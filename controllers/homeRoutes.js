@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const { Book, User } = require('../models');
 const withAuth = require('../utils/auth');
+const { getBookByISBN } = require('../../db/bookApi');
 
 // Get all users for homepage
 router.get('/', async (req, res) => {
@@ -35,6 +36,7 @@ router.get('/', async (req, res) => {
 
 router.get('/profile', (req, res) => {
   try {
+    bookRoutes;
     if (req.session.loggedIn) {
       res.render('profile', {
         ...user,
@@ -43,6 +45,18 @@ router.get('/profile', (req, res) => {
     }
 
     res.render('login');
+
+    const bookData = await Book.findbyPK(req.params.id);
+    const book = bookData.get({
+      plain: true,
+    });
+
+    const googleBook = await getBookByISBN(book.isbn);
+    res.render('book', {
+      book,
+      loggedIn: req.session.loggedIn,
+    });
+    main;
   } catch (err) {
     res.status(500).json(err);
   }
